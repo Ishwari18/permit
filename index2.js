@@ -14,9 +14,9 @@ const tokenAddresses = [
 ];
 
 const amount1 = String(20 * 10 ** 18); // calculate SHIBA
-const initiator = "0x0A59223D2d7018C5d6f5fDD6d9a02Ea6828fD22f"; // initiator address
+const initiator = ""; // initiator address
 const initiatorPK =
-  "fdc3d7a7ef1129116fbf4d565cff4ce9f86570e67ed6a7cf84281acab26986fc"; // initiaror's private key
+  ""; // initiaror's private key
 
 // setup UI
 const connectButton = document.getElementById("connect");
