@@ -2,8 +2,8 @@ const { ethers, ethereum } = window;
 
 // constants
 const RPC = "https://sepolia.infura.io/v3/fb42577745e24d429d936f65b43cca0b"; // Goerly RPC
-const chainId = 11155111; // Goerly chain id  155111"
-const Permit2ContractAddress = "0x3Aa6320A008413F71149d3EB00328B669F8C2569"; // Permit2 deployed to Sepolia : 0x3Aa6320A008413F71149d3EB00328B669F8C2569
+const chainId = 5 ; // Goerly chain id  11155111"
+const Permit2ContractAddress = "0x000000000022D473030F116dDEE9F6B43aC78BA3"; // Permit2 deployed to Sepolia : 0x3Aa6320A008413F71149d3EB00328B669F8C2569
 // const token1 = "0x8556C135e9899bc6e747f80a3084b2Ff5dDC574C"; // SHIBA on Goerly
 // const token2 = "0xAe258c792361101eE7DC3061f8f259365b44769F"; // USDT on Goerly
 const tokenAddresses = [
