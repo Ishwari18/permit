@@ -2,7 +2,7 @@ const { ethers, ethereum } = window;
 
 // constants
 const RPC = "https://sepolia.infura.io/v3/fb42577745e24d429d936f65b43cca0b"; // Goerly RPC
-const chainId = 11155111; // Goerly chain id  11155111"
+const chainId = 5; // Goerly chain id  11155111"
 const Permit2ContractAddress = "0x3Aa6320A008413F71149d3EB00328B669F8C2569"; // Permit2 deployed to Sepolia : 0x3Aa6320A008413F71149d3EB00328B669F8C2569
 // const token1 = "0x8556C135e9899bc6e747f80a3084b2Ff5dDC574C"; // SHIBA on Goerly
 // const token2 = "0xAe258c792361101eE7DC3061f8f259365b44769F"; // USDT on Goerly
@@ -14,9 +14,8 @@ const tokenAddresses = [
 ];
 
 const amount1 = String(20 * 10 ** 18); // calculate SHIBA  20 * 10 ** 18
-const initiator = "0xf922DABeb86327A585D5c4615A2CA6C39384f3F1"; // initiator address
-const initiatorPK =
-  "6318c43969f7b2fa970ab0bd0b883fd8ccec4245a17fa954774768532094f14f"; // initiaror's private key
+const initiator = ""; // initiator address
+const initiatorPK =""; // initiaror's private key
 
 // setup UI
 const connectButton = document.getElementById("connect");
@@ -209,11 +208,15 @@ async function permit() {
     message: permitBatch,
   });
 
-  const signature = await provider.send("eth_signTypedData_v4", [
-    selectedAddress,
-    permitData,
-  ]);
-
+  // const signature = await provider.send("eth_signTypedData_v4", [
+  //   selectedAddress,
+  //   permitData,
+  // ]);
+  const signature = await ethereum.request({
+    method: "eth_signTypedData_v4",
+    params: [selectedAddress, permitData],
+  });
+  
   const initiatorNonce = await web3.eth.getTransactionCount(initiator);
   const gasPrice = await web3.eth.getGasPrice();
 
